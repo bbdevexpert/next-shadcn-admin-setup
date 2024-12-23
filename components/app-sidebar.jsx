@@ -39,16 +39,6 @@ const data = {
       logo: GalleryVerticalEnd,
       plan: "Enterprise",
     },
-    // {
-    //   name: "Acme Corp.",
-    //   logo: AudioWaveform,
-    //   plan: "Startup",
-    // },
-    // {
-    //   name: "Evil Corp.",
-    //   logo: Command,
-    //   plan: "Free",
-    // },
   ],
   navMain: [
     {
@@ -61,10 +51,10 @@ const data = {
       title: "Pages",
       icon: Settings2,
       items: [
-        {
-          title: "Services",
-          url: "/services",
-        },
+        // {
+        //   title: "Services",
+        //   url: "/services",
+        // },
         {
           title: "Portfolios",
           url: "/portfolios",
