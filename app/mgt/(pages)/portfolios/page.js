@@ -1,6 +1,6 @@
 "use client";
 
-import Heading from "@/components/Common/Heading";
+import Heading from "@/components/common/Heading";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -34,7 +34,7 @@ export default function Page() {
     <div>
       <div className="flex justify-between mb-2">
         <Heading smallHead="Portfolios" />
-        <Button onClick={() => router.push("/portfolios/create")}>
+        <Button onClick={() => router.push("/mgt/portfolios/create")}>
           Create
         </Button>
       </div>

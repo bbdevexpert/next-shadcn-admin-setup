@@ -1,10 +1,10 @@
-import Heading from "@/components/Common/Heading";
-import CommonInput from "@/components/Common/CommonInput";
-import CommonSelect from "@/components/Common/CommonSelect";
-import CommonTextarea from "@/components/Common/CommonTextarea";
-import CommonCheckbox from "@/components/Common/CommonCheckbox";
-import CommonRadio from "@/components/Common/CommonRadio";
-import CommonButton from "@/components/Common/CommonButton";
+import Heading from "@/components/common/Heading";
+import CommonInput from "@/components/common/CommonInput";
+import CommonSelect from "@/components/common/CommonSelect";
+import CommonTextarea from "@/components/common/CommonTextarea";
+import CommonCheckbox from "@/components/common/CommonCheckbox";
+import CommonRadio from "@/components/common/CommonRadio";
+import CommonButton from "@/components/common/CommonButton";
 
 export default function Page() {
   return (

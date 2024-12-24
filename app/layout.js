@@ -1,7 +1,7 @@
 import { Montserrat } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
-import { ModeToggle } from "@/components/ModeToggle";
+import { SearchProvider } from "@/hooks/search-context";
 
 const unbounded = Montserrat({
   variable: "--font-geist-sans",
@@ -26,10 +26,7 @@ export default function RootLayout({ children }) {
           enableSystem
           disableTransitionOnChange
         >
-          {children}
-          <div className="fixed right-5 bottom-5">
-            <ModeToggle />
-          </div>
+          <SearchProvider>{children}</SearchProvider>
         </ThemeProvider>
       </body>
     </html>

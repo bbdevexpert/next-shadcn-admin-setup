@@ -1,5 +1,5 @@
 "use client";
-import Heading from "@/components/Common/Heading";
+import Heading from "@/components/common/Heading";
 import { Button } from "@/components/ui/button";
 import {
   DndContext,
@@ -33,9 +33,9 @@ import {
 } from "@/components/ui/card";
 import { AddNewItem } from "@/components/AddNewItem";
 import { useRouter } from "next/navigation";
-import CommonInput from "@/components/Common/CommonInput";
-import CommonTextarea from "@/components/Common/CommonTextarea";
-import CommonSelect from "@/components/Common/CommonSelect";
+import CommonInput from "@/components/common/CommonInput";
+import CommonTextarea from "@/components/common/CommonTextarea";
+import CommonSelect from "@/components/common/CommonSelect";
 import { CircleEllipsis } from "lucide-react";
 
 import {
@@ -92,10 +92,13 @@ export default function Page() {
       <div className="flex justify-between mb-3">
         <Heading smallHead="Create Portfolios" />
         <div className="flex justify-end gap-2">
-          <Button variant="outline" onClick={() => router.push("/portfolios")}>
+          <Button
+            variant="outline"
+            onClick={() => router.push("/mgt/portfolios")}
+          >
             Cancel
           </Button>
-          <Button onClick={() => router.push("/portfolios")}>Save</Button>
+          <Button onClick={() => router.push("/mgt/portfolios")}>Save</Button>
         </div>
       </div>
       <div className="grid md:grid-cols-2 gap-4">

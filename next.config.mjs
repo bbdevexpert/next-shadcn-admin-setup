@@ -7,6 +7,11 @@ const nextConfig = {
         destination: "/login",
         statusCode: 301,
       },
+      {
+        source: "/mgt",
+        destination: "/mgt/dashboard",
+        statusCode: 301,
+      },
     ];
   },
 };

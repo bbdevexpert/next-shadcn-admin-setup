@@ -1,53 +1,38 @@
-"use client";
-
-import { AppSidebar } from "@/components/app-sidebar";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
+import { AppSidebar } from "@/components/common/sidebar/app-sidebar";
 import { Separator } from "@/components/ui/separator";
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { usePathname } from "next/navigation";
+import { Suspense } from "react";
+import Loading from "./loading";
+import { ProfileDropdown } from "@/components/common/header/profile-dropdown";
+import { ModeToggle } from "@/components/ModeToggle";
+import { SearchComp } from "@/components/common/header/search";
+import { DynamicBreadcrumb } from "@/components/common/DynamicBreadcrumb";
 
 export default function RootLayout({ children }) {
-  const pathname = usePathname();
-  const cleanPathname = pathname.replace(/^\//, "");
-
   return (
     <>
       <SidebarProvider>
         <AppSidebar />
         <SidebarInset>
-          <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
-            <div className="flex items-center gap-2 px-4">
-              <SidebarTrigger className="-ml-1" />
-              <Separator orientation="vertical" className="mr-2 h-4" />
-              <Breadcrumb>
-                <BreadcrumbList>
-                  {/* <BreadcrumbItem className="hidden md:block">
-                    <BreadcrumbLink href="#">
-                      Building Your Application
-                    </BreadcrumbLink>
-                  </BreadcrumbItem>
-                  <BreadcrumbSeparator className="hidden md:block" /> */}
-                  <BreadcrumbItem>
-                    <BreadcrumbPage className="capitalize font-semibold">
-                      {cleanPathname || "Home"}
-                    </BreadcrumbPage>
-                  </BreadcrumbItem>
-                </BreadcrumbList>
-              </Breadcrumb>
+          <header className="flex px-4 py-3 shrink-0 items-center justify-between gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+            <div className="flex items-center gap-2">
+              <SidebarTrigger className="border" />
+              <Separator orientation="vertical" className="mx-2 h-6" />
+              <DynamicBreadcrumb />
+            </div>
+            <div className="flex items-center gap-2">
+              <SearchComp />
+              <ModeToggle />
+              <ProfileDropdown />
             </div>
           </header>
-          <div className="p-4 pt-0">{children}</div>
+          <div className="p-4">
+            <Suspense fallback={<Loading />}>{children}</Suspense>
+          </div>
         </SidebarInset>
       </SidebarProvider>
     </>

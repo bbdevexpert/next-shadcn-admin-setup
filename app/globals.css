@@ -120,3 +120,28 @@ body {
     opacity: 1;
   }
 }
+
+/*--------------------- 
+        Scrollbar css 
+----------------------------------*/
+*::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+  position: absolute;
+  /* display: none; */
+  scrollbar-gutter: stable both-edges;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #e4e4e4;
+  border-radius: 10px;
+  border: 2px solid transparent;
+}
+
+/*--------------------- 
+        Scrollbar css 
+----------------------------------*/

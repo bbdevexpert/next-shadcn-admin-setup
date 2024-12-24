@@ -14,7 +14,7 @@ export function ModeToggle() {
   };
 
   return (
-    <Button variant="outline" size="icon" onClick={toggleTheme}>
+    <Button variant="link" size="icon" onClick={toggleTheme}>
       <Sun
         className={`h-[1.2rem] w-[1.2rem] transition-all ${
           theme === "dark" ? "scale-0 rotate-90" : "scale-100 rotate-0"
