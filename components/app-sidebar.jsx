@@ -43,7 +43,7 @@ const data = {
   navMain: [
     {
       title: "Dashboard",
-      url: "/dashboard",
+      url: "dashboard",
       icon: SquareTerminal,
       isActive: true,
     },
@@ -57,7 +57,7 @@ const data = {
         // },
         {
           title: "Portfolios",
-          url: "/portfolios",
+          url: "portfolios",
         },
       ],
     },
@@ -88,7 +88,7 @@ const data = {
   adminComp: [
     {
       name: "Components",
-      url: "/components",
+      url: "components",
       icon: Component,
     },
   ],
