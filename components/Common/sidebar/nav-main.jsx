@@ -37,7 +37,7 @@ export function NavMain({ navData }) {
                         <SidebarMenuItem>
                           <CollapsibleTrigger asChild>
                             <SidebarMenuButton tooltip={name}>
-                              {icon && <ele.icon />}
+                              {ele?.icon && <ele.icon />}
                               <span>{name}</span>
                               {
                                 subMenus &&
@@ -52,8 +52,8 @@ export function NavMain({ navData }) {
                                 return (
                                   <SidebarMenuSubItem key={i}>
                                     <SidebarMenuSubButton asChild>
-                                      <Link href={`/mgt/${url}`}>
-                                        {icon && <ele.icon />}
+                                      <Link href={`${url}`}>
+                                        {ele?.icon && <ele.icon />}
                                         <span>{name}</span>
                                       </Link>
                                     </SidebarMenuSubButton>
@@ -66,8 +66,8 @@ export function NavMain({ navData }) {
                       </Collapsible>
                       :
                       <SidebarMenuButton asChild >
-                        <Link href={`/mgt/${url}`}>
-                          {icon && <ele.icon />}
+                        <Link href={`${url}`}>
+                          {ele?.icon && <ele.icon />}
                           <span>{name}</span>
                         </Link>
                       </SidebarMenuButton>

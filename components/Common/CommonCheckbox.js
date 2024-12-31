@@ -1,15 +1,25 @@
+import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 
-export default function CommonCheckbox() {
+export default function CommonCheckbox(props) {
+  const { label, id, error, row, checkList, defaultValue, onValueChange } =
+    props;
   return (
-    <div className="flex items-center space-x-2">
-      <Checkbox id="terms2" />
-      <label
-        htmlFor="terms2"
-        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+    <div>
+      <Label htmlFor={id}>{label}</Label>
+      <div
+        className={`flex flex-wrap gap-3 mt-2 ${row ? "flex-row" : "flex-col"}`}
       >
-        Accept terms and conditions
-      </label>
+        {checkList?.map((ele, i) => {
+          return (
+            <div key={i} className="flex items-center space-x-2">
+              <Checkbox value={ele.label} id={ele.id} />
+              <Label htmlFor={ele.id}>{ele.label}</Label>
+            </div>
+          );
+        })}
+      </div>
+      {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
     </div>
   );
 }

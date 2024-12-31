@@ -34,7 +34,7 @@ export default function Page() {
     <div>
       <div className="flex justify-between mb-2">
         <Heading smallHead="Portfolios" />
-        <Button onClick={() => router.push("/mgt/portfolios/create")}>
+        <Button size='sm' onClick={() => router.push("/mgt/portfolios/create")}>
           Create
         </Button>
       </div>
@@ -57,8 +57,8 @@ export default function Page() {
                 </CardHeader>
                 <CardContent></CardContent>
                 <CardFooter className="flex justify-end gap-2">
-                  <Button variant="outline">Delete</Button>
-                  <Button>Update</Button>
+                  <Button variant="outline" size='sm'>Delete</Button>
+                  <Button size='sm'>Update</Button>
                 </CardFooter>
               </Card>
             </div>

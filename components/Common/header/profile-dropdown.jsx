@@ -1,3 +1,5 @@
+"use client"
+import { logout } from '@/app/(auth)/login/actions';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import {
@@ -10,8 +12,11 @@ import {
     DropdownMenuShortcut,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { useRouter } from 'next/navigation';
 
 export function ProfileDropdown() {
+    const router = useRouter();
+
     return (
         <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
@@ -33,22 +38,22 @@ export function ProfileDropdown() {
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                    <DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => router.push("/mgt/profile")} className="cursor-pointer">
                         Profile
                         <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
+                    {/* <DropdownMenuItem>
                         Billing
                         <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
+                    </DropdownMenuItem> */}
+                    <DropdownMenuItem onClick={() => router.push("/mgt/account")} className="cursor-pointer">
                         Settings
                         <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
                     </DropdownMenuItem>
-                    <DropdownMenuItem>New Team</DropdownMenuItem>
+                    {/* <DropdownMenuItem>New Team</DropdownMenuItem> */}
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={() => logout()}>
                     Log out
                     <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
                 </DropdownMenuItem>

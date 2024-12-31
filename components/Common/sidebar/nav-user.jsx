@@ -3,9 +3,11 @@ import { Avatar, AvatarFallback, AvatarImage, } from "@/components/ui/avatar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger, } from "@/components/ui/dropdown-menu"
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar, } from "@/components/ui/sidebar"
 import { logout } from "@/app/(auth)/login/actions"
+import { useRouter } from "next/navigation"
 
 export function NavUser({ user }) {
   const { isMobile } = useSidebar()
+  const router = useRouter();
 
   return (
     <SidebarMenu>
@@ -45,11 +47,11 @@ export function NavUser({ user }) {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={() => router.push("/mgt/account")} className="cursor-pointer">
                 <BadgeCheck />
                 Account
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={() => router.push("/mgt/notifications")} className="cursor-pointer">
                 <Bell />
                 Notifications
               </DropdownMenuItem>

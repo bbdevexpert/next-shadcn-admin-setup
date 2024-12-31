@@ -93,12 +93,12 @@ export default function Page() {
         <Heading smallHead="Create Portfolios" />
         <div className="flex justify-end gap-2">
           <Button
-            variant="outline"
+            variant="outline" size='sm'
             onClick={() => router.push("/mgt/portfolios")}
           >
             Cancel
           </Button>
-          <Button onClick={() => router.push("/mgt/portfolios")}>Save</Button>
+          <Button size='sm' onClick={() => router.push("/mgt/portfolios")}>Save</Button>
         </div>
       </div>
       <div className="grid md:grid-cols-2 gap-4">
@@ -195,7 +195,7 @@ export default function Page() {
                         </div>
                         <SheetFooter>
                           <SheetClose asChild>
-                            <Button type="submit">Save changes</Button>
+                            <Button type="submit" size='sm'>Save changes</Button>
                           </SheetClose>
                         </SheetFooter>
                       </SheetContent>
@@ -222,7 +222,7 @@ export default function Page() {
                         </div>
                         <SheetFooter>
                           <SheetClose asChild>
-                            <Button type="submit">Save changes</Button>
+                            <Button type="submit" size='sm'>Save changes</Button>
                           </SheetClose>
                         </SheetFooter>
                       </SheetContent>
@@ -249,7 +249,7 @@ export default function Page() {
                         </div>
                         <SheetFooter>
                           <SheetClose asChild>
-                            <Button type="submit">Save changes</Button>
+                            <Button type="submit" size='sm'>Save changes</Button>
                           </SheetClose>
                         </SheetFooter>
                       </SheetContent>

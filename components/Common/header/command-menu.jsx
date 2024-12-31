@@ -19,7 +19,7 @@ export function CommandMenu() {
     const { open, setOpen } = useSearch()
 
     const handleClick = (id) => {
-        router.push(`/mgt/${id}`)
+        router.push(`${id}`)
         setOpen(false);
 
         console.log('called');

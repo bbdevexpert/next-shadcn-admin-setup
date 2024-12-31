@@ -14,9 +14,9 @@ const data = {
     avatar: "/avatars/shadcn.jpg",
   },
   teams: {
-    name: "Dashboard Inc",
+    name: "Company Inc.",
     logo: GalleryVerticalEnd,
-    plan: "Enterprise",
+    plan: "Next + Postgres",
   },
 }
 

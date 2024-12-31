@@ -2,9 +2,9 @@ import { Montserrat } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { SearchProvider } from "@/hooks/search-context";
+import { Toaster } from "@/components/ui/toaster";
 
 const unbounded = Montserrat({
-  variable: "--font-geist-sans",
   subsets: ["latin"],
 });
 
@@ -22,11 +22,12 @@ export default function RootLayout({ children }) {
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >
           <SearchProvider>{children}</SearchProvider>
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>
