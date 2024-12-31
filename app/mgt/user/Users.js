@@ -3,24 +3,48 @@ import { DataTable } from "@/components/common/Table/data-table";
 import { CreateUser } from "./CreateUser";
 import { ActionModal } from "@/components/common/Modals/ActionModal";
 import { CircleX, MoreHorizontal } from "lucide-react";
+import { useState } from "react";
 
-export default function Users() {
-  // Sample user data
-  const data = [
-    { id: 1, name: "John Doe", role: "Admin", email: "john.doe@example.com" },
-    {
-      id: 2,
-      name: "Jane Smith",
-      role: "Editor",
-      email: "jane.smith@example.com",
-    },
-    {
-      id: 3,
-      name: "Alice Brown",
-      role: "Viewer",
-      email: "alice.brown@example.com",
-    },
-  ];
+export default function Users({ users }) {
+  const [usersData, setUsersData] = useState(users);
+
+  const fetchData = async () => {
+    try {
+      const data = await fetcher("http://localhost:3000/api/users");
+      setUsersData(data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const handleUserChange = () => {
+    fetchData();
+  };
+  const handleDeleteUser = async (userId) => {
+    try {
+      const response = await fetch("/api/users", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id: userId }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete user");
+      }
+
+      const result = await response.json();
+      if (result.success) {
+        // Refetch the table data after deletion
+        fetchData();
+      } else {
+        console.error("Failed to delete user");
+      }
+    } catch (error) {
+      console.error("Error deleting user:", error);
+    }
+  };
 
   // Column definitions
   const columns = [
@@ -43,11 +67,6 @@ export default function Users() {
       id: "actions",
       header: () => <div className="text-right">Actions</div>,
       cell: ({ row }) => {
-        const handleDeleteUser = () => {
-          console.log("User deleted:", row.original.name);
-          // Perform delete action
-        };
-
         return (
           <div className="text-right">
             <div className="flex justify-end group">
@@ -60,7 +79,7 @@ export default function Users() {
                     description="This action will permanently delete the user and their details. Do you want to continue?"
                     cancelLabel="Cancel"
                     actionLabel="Delete"
-                    onAction={handleDeleteUser}
+                    onAction={() => handleDeleteUser(row.original.id)}
                   />
                 </div>
                 <div className="cursor-pointer hover:text-primary">
@@ -85,7 +104,11 @@ export default function Users() {
         <h1 className="text-2xl font-bold tracking-tight">User Management</h1>
       </div>
       <div>
-        <DataTable columns={columns} data={data} create={<CreateUser />} />
+        <DataTable
+          columns={columns}
+          data={usersData}
+          create={<CreateUser onSubmit={handleUserChange} />}
+        />
       </div>
     </div>
   );

@@ -34,7 +34,6 @@ const FormSchema = z.object({
 
 export function CreateUser({ initialData, onSubmit }) {
   const isEditing = !!initialData;
-
   const form = useForm({
     resolver: zodResolver(FormSchema),
     defaultValues: initialData || {
@@ -44,18 +43,53 @@ export function CreateUser({ initialData, onSubmit }) {
     },
   });
 
-  function handleSubmit(data) {
-    onSubmit(data);
-    toast({
-      title: isEditing
-        ? "User updated successfully!"
-        : "User created successfully!",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
+  async function handleSubmit(data) {
+    try {
+      let response;
+      const url = "/api/users";
+      let method = isEditing ? "PUT" : "POST";
+      let body = JSON.stringify(
+        isEditing ? { ...data, id: initialData.id } : data
+      );
+
+      response = await fetch(url, {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body,
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || "Something went wrong");
+      }
+
+      // Call onSubmit prop to notify parent of data change
+      onSubmit(result);
+
+      // Close the sheet
+      form.reset();
+      toast({
+        title: isEditing
+          ? "User updated successfully!"
+          : "User created successfully!",
+        description: (
+          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+            <code className="text-white">
+              {JSON.stringify(result, null, 2)}
+            </code>
+          </pre>
+        ),
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
   }
 
   return (
