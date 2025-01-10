@@ -1,3 +1,4 @@
+"use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -18,6 +19,8 @@ import { InputField } from "@/components/common/InputField";
 import { SelectField } from "@/components/common/SelectField";
 import { toast } from "@/hooks/use-toast";
 import { Edit } from "lucide-react";
+import { useState } from "react";
+import { Separator } from "@/components/ui/separator";
 
 // Schema with validation
 const FormSchema = z.object({
@@ -43,45 +46,35 @@ export function CreateUser({ initialData, onSubmit }) {
     },
   });
 
+  const [open, setOpen] = useState(false); // Track sheet open/close state
+
   async function handleSubmit(data) {
     try {
-      let response;
-      const url = "/api/users";
       let method = isEditing ? "PUT" : "POST";
-      let body = JSON.stringify(
+      const body = JSON.stringify(
         isEditing ? { ...data, id: initialData.id } : data
       );
 
-      response = await fetch(url, {
+      const response = await fetch("/api/users", {
         method,
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body,
       });
 
-      const result = await response.json();
-
       if (!response.ok) {
-        throw new Error(result.error || "Something went wrong");
+        throw new Error("Failed to process user data");
       }
 
-      // Call onSubmit prop to notify parent of data change
-      onSubmit(result);
+      const result = await response.json();
+      onSubmit(result); // Notify parent of changes
+      setOpen(false); // Close sheet
+      form.reset(); // Reset form state
 
-      // Close the sheet
-      form.reset();
       toast({
         title: isEditing
           ? "User updated successfully!"
           : "User created successfully!",
-        description: (
-          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-            <code className="text-white">
-              {JSON.stringify(result, null, 2)}
-            </code>
-          </pre>
-        ),
+        description: "Operation completed successfully.",
       });
     } catch (error) {
       toast({
@@ -93,12 +86,12 @@ export function CreateUser({ initialData, onSubmit }) {
   }
 
   return (
-    <Sheet>
+    <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
         {isEditing ? (
           <Edit className="w-4 h-4" />
         ) : (
-          <Button size="sm">{"Create New User"}</Button>
+          <Button>Create New User</Button>
         )}
       </SheetTrigger>
       <SheetContent>
@@ -107,31 +100,21 @@ export function CreateUser({ initialData, onSubmit }) {
           <SheetDescription>
             {isEditing
               ? "Edit the details of the user below."
-              : "Fill out the form below to create a new user."}
+              : "Fill out the form to create a new user."}
           </SheetDescription>
         </SheetHeader>
+        <Separator className="my-4" />
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(handleSubmit)}
-            className="space-y-6 mt-6"
+            className="space-y-6"
           >
-            <InputField
-              name="name"
-              control={form.control}
-              label="Name"
-              placeholder="e.g., John Doe"
-            />
-            <InputField
-              name="email"
-              control={form.control}
-              label="Email"
-              placeholder="e.g., john.doe@example.com"
-            />
+            <InputField name="name" control={form.control} label="Name" />
+            <InputField name="email" control={form.control} label="Email" />
             <SelectField
               name="role"
               control={form.control}
               label="Role"
-              placeholder="Select role"
               options={["Admin", "Editor", "Viewer"]}
             />
             <SheetFooter>

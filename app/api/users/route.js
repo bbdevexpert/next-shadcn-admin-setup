@@ -3,26 +3,26 @@ import path from "path";
 
 const filePath = path.join(process.cwd(), "/helper/users.json");
 
+const readData = () => JSON.parse(fs.readFileSync(filePath, "utf-8"));
+const writeData = (data) =>
+  fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+
 export async function GET() {
-  // Read data
-  const data = JSON.parse(fs.readFileSync(filePath, "utf-8"));
-  return new Response(JSON.stringify(data), { status: 200 });
+  return new Response(JSON.stringify(readData()), { status: 200 });
 }
 
 export async function POST(req) {
-  // Add a new user
   const { name, email, phone, role } = await req.json();
-  const data = JSON.parse(fs.readFileSync(filePath, "utf-8"));
+  const data = readData();
   const newUser = { id: Date.now(), name, email, phone, role };
   data.push(newUser);
-  fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+  writeData(data);
   return new Response(JSON.stringify(newUser), { status: 201 });
 }
 
 export async function PUT(req) {
-  // Edit an existing user
   const { id, name, email, phone, role } = await req.json();
-  const data = JSON.parse(fs.readFileSync(filePath, "utf-8"));
+  const data = readData();
   const index = data.findIndex((user) => user.id === id);
   if (index === -1) {
     return new Response(JSON.stringify({ error: "User not found" }), {
@@ -30,15 +30,13 @@ export async function PUT(req) {
     });
   }
   data[index] = { id, name, email, phone, role };
-  fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+  writeData(data);
   return new Response(JSON.stringify(data[index]), { status: 200 });
 }
 
 export async function DELETE(req) {
-  // Delete a user
   const { id } = await req.json();
-  let data = JSON.parse(fs.readFileSync(filePath, "utf-8"));
-  data = data.filter((user) => user.id !== id);
-  fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+  const data = readData().filter((user) => user.id !== id);
+  writeData(data);
   return new Response(JSON.stringify({ success: true }), { status: 200 });
 }

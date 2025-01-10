@@ -30,7 +30,7 @@ export default function RootLayout({ children }) {
               <ProfileDropdown />
             </div>
           </header>
-          <div className="p-4">
+          <div className="p-4 ">
             <Suspense fallback={<Loading />}>{children}</Suspense>
           </div>
         </SidebarInset>

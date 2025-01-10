@@ -3,30 +3,39 @@ import { DataTable } from "@/components/common/Table/data-table";
 import { CreateUser } from "./CreateUser";
 import { ActionModal } from "@/components/common/Modals/ActionModal";
 import { CircleX, MoreHorizontal } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Users({ users }) {
-  const [usersData, setUsersData] = useState(users);
+  const [usersData, setUsersData] = useState(users); // Initial state from server-side
+  const [loading, setLoading] = useState(false); // Loading state for actions
 
+  // Fetch the latest user data
   const fetchData = async () => {
+    setLoading(true);
     try {
-      const data = await fetcher("http://localhost:3000/api/users");
-      setUsersData(data);
+      const response = await fetch("http://localhost:3000/api/users");
+      if (!response.ok) throw new Error("Failed to fetch users");
+      const data = await response.json();
+      setUsersData(data); // Update state with new data
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
+  // Handle data changes
   const handleUserChange = () => {
-    fetchData();
+    fetchData(); // Refetch data after adding or updating
   };
-  const handleDeleteUser = async (userId) => {
+
+  // Handle user deletion
+  const handleDeleteUser = async (userId, closeModal) => {
+    setLoading(true);
     try {
       const response = await fetch("/api/users", {
         method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: userId }),
       });
 
@@ -36,60 +45,66 @@ export default function Users({ users }) {
 
       const result = await response.json();
       if (result.success) {
-        // Refetch the table data after deletion
-        fetchData();
+        fetchData(); // Refetch data after deletion
+        closeModal(); // Close modal on success
       } else {
-        console.error("Failed to delete user");
+        throw new Error("Failed to delete user");
       }
     } catch (error) {
       console.error("Error deleting user:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  // Column definitions
+  // Define table columns
   const columns = [
     {
       accessorKey: "name",
       header: "Name",
-      cell: ({ row }) => <div>{row.getValue("name")}</div>,
+      cell: ({ row }) => (
+        <div className="w-[200px]">{row.getValue("name")}</div>
+      ),
     },
     {
       accessorKey: "role",
       header: "Role",
-      cell: ({ row }) => <div>{row.getValue("role")}</div>,
+      cell: ({ row }) => (
+        <div className="w-[100px]">{row.getValue("role")}</div>
+      ),
     },
     {
       accessorKey: "email",
       header: "Email",
-      cell: ({ row }) => <div>{row.getValue("email")}</div>,
+      cell: ({ row }) => (
+        <div className="w-[220px]">{row.getValue("email")}</div>
+      ),
     },
     {
       id: "actions",
-      header: () => <div className="text-right">Actions</div>,
+      header: () => <div className="text-center">Actions</div>,
       cell: ({ row }) => {
         return (
-          <div className="text-right">
-            <div className="flex justify-end group">
-              <div className="hidden gap-[2px] transition-all duration-1000 ease-in-out group-hover:flex">
-                <div className="cursor-pointer hover:text-primary">
-                  {/* Delete Action */}
-                  <ActionModal
-                    triggerButtonLabel={<CircleX className="w-4 h-4" />}
-                    title="Are you sure you want to remove this user?"
-                    description="This action will permanently delete the user and their details. Do you want to continue?"
-                    cancelLabel="Cancel"
-                    actionLabel="Delete"
-                    onAction={() => handleDeleteUser(row.original.id)}
-                  />
-                </div>
-                <div className="cursor-pointer hover:text-primary">
-                  <CreateUser initialData={row.original} />
-                </div>
+          <div className="text-center">
+            <div className="flex justify-center group">
+              <div className="hidden gap-1 transition-all duration-1000 ease-in-out group-hover:flex">
+                <ActionModal
+                  triggerButtonLabel={<CircleX className="w-4 h-4" />}
+                  title="Are you sure you want to remove this user?"
+                  description="This action will permanently delete the user and their details."
+                  cancelLabel="Cancel"
+                  actionLabel="Delete"
+                  onAction={(closeModal) =>
+                    handleDeleteUser(row.original.id, closeModal)
+                  }
+                />
+                <CreateUser
+                  initialData={row.original}
+                  onSubmit={handleUserChange} // Refresh data on edit
+                />
               </div>
-              <div className="flex transition-all duration-1000 ease-in-out group-hover:hidden">
-                <div className="hover:text-primary">
-                  <MoreHorizontal className="w-4 h-4" />
-                </div>
+              <div className="group-hover:hidden">
+                <MoreHorizontal className="w-4 h-4" />
               </div>
             </div>
           </div>
@@ -103,13 +118,12 @@ export default function Users({ users }) {
       <div className="mb-2 flex items-center justify-between space-y-2">
         <h1 className="text-2xl font-bold tracking-tight">User Management</h1>
       </div>
-      <div>
-        <DataTable
-          columns={columns}
-          data={usersData}
-          create={<CreateUser onSubmit={handleUserChange} />}
-        />
-      </div>
+      {loading && <p>Loading...</p>}
+      <DataTable
+        columns={columns}
+        data={usersData} // Use the updated data from state
+        create={<CreateUser onSubmit={handleUserChange} />}
+      />
     </div>
   );
 }
